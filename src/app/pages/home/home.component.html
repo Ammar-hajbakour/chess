@@ -1,0 +1,77 @@
+<img src="assets/intro.png" alt="chess" />
+<nav>
+  <button class="chess-btn" (click)="gameType.set('local'); startGame()">
+    Local Game
+  </button>
+  <button
+    class="chess-btn"
+    (click)="optionsDialogState = 'open'; gameType.set('against-friend')"
+  >
+    Play against a friend
+  </button>
+  <button
+    class="chess-btn"
+    (click)="optionsDialogState = 'open'; gameType.set('against-computer')"
+  >
+    Play against a computer
+  </button>
+</nav>
+
+@if(optionsDialogState=== 'open') {
+<div class="dialog">
+  <img src="assets/intro.png" alt="chess" />
+  @if(gameType() === 'against-friend') {
+  <div class="actions">
+    <small>Nickname</small>
+    <input
+      (change)="(user)"
+      type="text"
+      placeholder="John Doe"
+      required
+      minlength="3"
+      maxlength="20"
+    />
+  </div>
+
+  } @if(gameType() === 'against-computer') {
+
+  <div class="actions">
+    <small>Level</small>
+    @for(level of stockfishLevel; track level) {
+    <button
+      class="chess-btn"
+      (click)="this.currenStockfishLevel = level"
+      [ngClass]="{ selected: level === currenStockfishLevel }"
+    >
+      {{ level }}
+    </button>
+    }
+  </div>
+  }
+  <div class="actions">
+    <small>Pieces Color</small>
+    <button
+      class="chess-btn"
+      [ngClass]="{ selected: piecesColor === 'w' }"
+      (click)="piecesColor = 'w'"
+    >
+      White
+    </button>
+    <button
+      class="chess-btn"
+      [ngClass]="{ selected: piecesColor === 'b' }"
+      (click)="piecesColor = 'b'"
+    >
+      Black
+    </button>
+  </div>
+
+  <button type="submit" class="chess-btn play" (click)="startGame()">
+    {{ gameType() === "against-friend" ? "Create Game" : "Start Game" }}
+  </button>
+
+  <span class="close-dialog" (click)="optionsDialogState = 'close'">
+    &times;
+  </span>
+</div>
+}

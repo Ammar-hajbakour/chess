@@ -1,0 +1,129 @@
+@if(gameOverMessage) {
+<div class="dialog">
+  <img src="assets/intro.png" alt="chess" />
+  <p>
+    {{ gameOverMessage }}
+  </p>
+  <div class="actions">
+    <button class="chess-btn" (click)="reset()">
+      <img src="assets/icons/restart.png" alt="flip" />
+    </button>
+    <button class="chess-btn" (click)="router.navigate(['/'])">
+      <img src="assets/icons/home.png" alt="home" />
+    </button>
+  </div>
+</div>
+} @if(confirmation) {
+<div class="dialog">
+  <img src="{{ confirmation.img }}" alt="{{ confirmation.action }}" />
+  <p>
+    {{ confirmation.message }}
+  </p>
+  <div class="actions">
+    <button
+      class="chess-btn"
+      (click)="confirmation.action(); confirmation = undefined"
+    >
+      Yes
+    </button>
+    <button class="chess-btn" (click)="confirmation = undefined">No</button>
+  </div>
+</div>
+}
+<main id="chess-board" [ngClass]="{ rotated: flipMode() }">
+  <div class="board">
+    <div class="row">
+      <div
+        class="square"
+        style="
+          height: fit-content;
+          width: fit-content;
+          padding: 0.25rem;
+          visibility: hidden;
+        "
+      >
+        0
+      </div>
+      @for(x of ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']; track x) {
+      <div
+        [ngClass]="{ rotated: flipMode() }"
+        class="square"
+        style="height: fit-content; padding-block-start: 0.25rem"
+      >
+        {{ x }}
+      </div>
+      }
+    </div>
+    @for(row of chessBoardView; track row; let x = $index) {
+    <div class="row">
+      <div
+        [ngClass]="{ rotated: flipMode() }"
+        class="square"
+        style="width: fit-content; padding-inline: 0.25rem"
+      >
+        {{ x + 1 }}
+      </div>
+      @for(piece of row; track piece; let y = $index) {
+
+      <div
+        class="square board-square"
+        [ngClass]="{
+          light: !isSquareDark(x, y),
+          dark: isSquareDark(x, y),
+          'selected-square': isSquareSelected(x, y),
+          'last-move': isSquareLastMove(x, y),
+          'king-in-check': isSquareChecked(x, y),
+          'promotion-square': isSquarePromotionSquare(x, y)
+        }"
+        (click)="move(x, y)"
+      >
+        <div
+          [ngClass]="{ 'safe-square': isSquareSafeForSelectedPiece(x, y) }"
+        ></div>
+        @if(piece){
+        <img
+          draggable="false"
+          src="{{ pieceImagePaths[piece] }}"
+          alt="{{ piece }}"
+          class="piece"
+          [ngClass]="{ rotated: flipMode() }"
+        />
+        }
+      </div>
+      }
+    </div>
+    } @if(isPromotionActive()) {
+    <div class="promotion-dialog">
+      @for(piece of promotionPieces(); track piece){
+      <div class="square board-square">
+        <img
+          [src]="pieceImagePaths[piece]"
+          alt=""
+          class="piece"
+          (click)="promotePiece(piece)"
+        />
+      </div>
+      }
+      <span class="close-promotion-dialog" (click)="closePromotionDialog()">
+        &times;
+      </span>
+    </div>
+    }
+  </div>
+</main>
+<aside>
+  <div class="actions">
+    <button class="chess-btn" (click)="flipBoard()">
+      <img src="assets/icons/flip.png" alt="flip" />
+    </button>
+    <button class="chess-btn" (click)="handleActions('surrender')">
+      <img src="assets/icons/finish.png" alt="surrendering" />
+    </button>
+    <button class="chess-btn" (click)="handleActions('reset')">
+      <img src="assets/icons/restart.png" alt="restart" />
+    </button>
+    <button class="chess-btn" (click)="handleActions('home')">
+      <img src="assets/icons/home.png" alt="home" />
+    </button>
+  </div>
+</aside>

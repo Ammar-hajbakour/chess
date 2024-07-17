@@ -1,0 +1,7 @@
+@if(options()){ @if(options()?.type === 'local') {
+<local-board [options]="options()!"></local-board>
+} @else if(options()?.type === 'against-computer') {
+<stockfish-board [options]="options()!"></stockfish-board>
+} @else {
+<online-board [options]="options()!"></online-board>
+} }
