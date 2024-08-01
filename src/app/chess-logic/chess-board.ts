@@ -11,7 +11,7 @@ import { Queen } from "./pieces/queen";
 import { Rook } from "./pieces/rook";
 
 export class ChessBoard {
-  private chessBoard: (Piece | null)[][];
+  chessBoard: (Piece | null)[][];
   private readonly chessBoardSize: number = 8;
   private _playerColor = Color.White;
   private _safeSquares: SafeSquares;
@@ -19,19 +19,19 @@ export class ChessBoard {
   private _checkState: CheckState = { isInCheck: false };
   private fiftyMoveRuleCounter: number = 0;
 
-  private _isGameOver: boolean = false;
-  private _gameOverMessage: string | undefined;
+  _isGameOver: boolean = false;
+  _gameOverMessage: string | undefined;
 
   private fullNumberOfMoves: number = 1;
   private threeFoldRepetitionDictionary = new Map<string, number>();
   private threeFoldRepetitionFlag: boolean = false;
 
-  private _boardAsFEN: string = FENConverter.initialPosition;
+  _boardAsFEN: string = FENConverter.initialPosition;
   private FENConverter = new FENConverter();
 
-  private _moveList: MoveList = [];
+  _moveList: MoveList = [];
+  _moves: string[] = [];
   private _gameHistory: GameHistory;
-
   constructor() {
     this.chessBoard = [
       [
@@ -59,49 +59,68 @@ export class ChessBoard {
     this._gameHistory = [{ board: this.chessBoardView, lastMove: this._lastMove, checkState: this._checkState }];
   }
 
-  public get playerColor(): Color {
+  get playerColor(): Color {
     return this._playerColor;
   }
 
-  public get chessBoardView(): (FENChar | null)[][] {
+  get chessBoardView(): (FENChar | null)[][] {
     return this.chessBoard.map(row => {
       return row.map(piece => piece instanceof Piece ? piece.FENChar : null);
     })
   }
 
-  public get safeSquares(): SafeSquares {
+  get safeSquares(): SafeSquares {
     return this._safeSquares;
   }
 
-  public get lastMove(): LastMove | undefined {
+  get lastMove(): LastMove | undefined {
     return this._lastMove;
   }
 
-  public get checkState(): CheckState {
+  get checkState(): CheckState {
     return this._checkState;
   }
 
-  public get isGameOver(): boolean {
+  get isGameOver(): boolean {
     return this._isGameOver;
   }
 
-  public get gameOverMessage(): string | undefined {
+  get gameOverMessage(): string | undefined {
     return this._gameOverMessage;
   }
 
-  public get boardAsFEN(): string {
+  get boardAsFEN(): string {
     return this._boardAsFEN;
   }
 
-  public get moveList(): MoveList {
+  get moveList(): MoveList {
     return this._moveList;
   }
-
-  public get gameHistory(): GameHistory {
+  get moves(): string[] {
+    return this._moves;
+  }
+  get gameHistory(): GameHistory {
     return this._gameHistory;
   }
 
-  public static isSquareDark(x: number, y: number): boolean {
+  resetBoard() {
+    this.chessBoard = initialBoard
+    this._playerColor = Color.White;
+    this._safeSquares = this.findSafeSqures();
+    this._lastMove = undefined;
+    this._checkState = { isInCheck: false };
+    this._isGameOver = false;
+    this._gameOverMessage = undefined;
+    this._boardAsFEN = FENConverter.initialPosition;
+    this._moveList = [];
+    this._moves = [];
+    this._gameHistory = [{ board: this.chessBoardView, lastMove: this._lastMove, checkState: this._checkState }];
+    this.fiftyMoveRuleCounter = 0;
+    this.threeFoldRepetitionFlag = false;
+    this.threeFoldRepetitionDictionary = new Map<string, number>();
+  }
+
+  static isSquareDark(x: number, y: number): boolean {
     return x % 2 === 0 && y % 2 === 0 || x % 2 === 1 && y % 2 === 1;
   }
 
@@ -109,7 +128,7 @@ export class ChessBoard {
     return x >= 0 && y >= 0 && x < this.chessBoardSize && y < this.chessBoardSize;
   }
 
-  public isInCheck(playerColor: Color, checkingCurrentPosition: boolean): boolean {
+  isInCheck(playerColor: Color, checkingCurrentPosition: boolean): boolean {
     for (let x = 0; x < this.chessBoardSize; x++) {
       for (let y = 0; y < this.chessBoardSize; y++) {
         const piece: Piece | null = this.chessBoard[x][y];
@@ -290,7 +309,7 @@ export class ChessBoard {
       this.isPositionSafeAfterMove(kingPositionX, kingPositionY, kingPositionX, secondNextKingPositionY);
   }
 
-  public move(prevX: number, prevY: number, newX: number, newY: number, promotedPieceType: FENChar | null): void {
+  move(prevX: number, prevY: number, newX: number, newY: number, promotedPieceType: FENChar | null): void {
     if (this._isGameOver) throw new Error("Game is over, you cant play move");
 
     if (!this.areCoordsValid(prevX, prevY) || !this.areCoordsValid(newX, newY)) return;
@@ -299,10 +318,9 @@ export class ChessBoard {
 
     const pieceSafeSquares: Coords[] | undefined = this._safeSquares.get(prevX + "," + prevY);
     if (!pieceSafeSquares || !pieceSafeSquares.find(coords => coords.x === newX && coords.y === newY))
-      throw new Error("Square is not safe");
 
-    if ((piece instanceof Pawn || piece instanceof King || piece instanceof Rook) && !piece.hasMoved)
-      piece.hasMoved = true;
+      if ((piece instanceof Pawn || piece instanceof King || piece instanceof Rook) && !piece.hasMoved)
+        piece.hasMoved = true;
 
     const moveType = new Set<MoveType>();
 
@@ -332,7 +350,6 @@ export class ChessBoard {
       moveType.add(!safeSquares.size ? MoveType.CheckMate : MoveType.Check);
     else if (!moveType.size)
       moveType.add(MoveType.BasicMove);
-
     this.storeMove(promotedPieceType);
     this.updateGameHistory();
 
@@ -511,7 +528,9 @@ export class ChessBoard {
     if (!this._moveList[this.fullNumberOfMoves - 1])
       this._moveList[this.fullNumberOfMoves - 1] = [move];
     else
-      this._moveList[this.fullNumberOfMoves - 1].push(move);
+      if (!this._moveList[this.fullNumberOfMoves - 1].includes(move))
+        this._moveList[this.fullNumberOfMoves - 1].push(move);
+
   }
 
   private startingPieceCoordsNotation(): string {
@@ -550,6 +569,7 @@ export class ChessBoard {
     return columns[prevY] + String(prevX + 1);
   }
 
+
   private updateGameHistory(): void {
     this._gameHistory.push({
       board: [...this.chessBoardView.map(row => [...row])],
@@ -558,3 +578,26 @@ export class ChessBoard {
     });
   }
 }
+
+const initialBoard = [
+  [
+    new Rook(Color.White), new Knight(Color.White), new Bishop(Color.White), new Queen(Color.White),
+    new King(Color.White), new Bishop(Color.White), new Knight(Color.White), new Rook(Color.White)
+  ],
+  [
+    new Pawn(Color.White), new Pawn(Color.White), new Pawn(Color.White), new Pawn(Color.White),
+    new Pawn(Color.White), new Pawn(Color.White), new Pawn(Color.White), new Pawn(Color.White)
+  ],
+  [null, null, null, null, null, null, null, null],
+  [null, null, null, null, null, null, null, null],
+  [null, null, null, null, null, null, null, null],
+  [null, null, null, null, null, null, null, null],
+  [
+    new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black),
+    new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black)
+  ],
+  [
+    new Rook(Color.Black), new Knight(Color.Black), new Bishop(Color.Black), new Queen(Color.Black),
+    new King(Color.Black), new Bishop(Color.Black), new Knight(Color.Black), new Rook(Color.Black)
+  ],
+];

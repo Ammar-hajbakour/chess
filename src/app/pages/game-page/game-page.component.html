@@ -1,6 +1,6 @@
 @if(options()){ @if(options()?.type === 'local') {
-<local-board [options]="options()!"></local-board>
-} @else if(options()?.type === 'against-computer') {
+<main-board [options]="options()!"></main-board>
+} @else if(options()?.type === 'stockfish') {
 <stockfish-board [options]="options()!"></stockfish-board>
 } @else {
 <online-board [options]="options()!"></online-board>

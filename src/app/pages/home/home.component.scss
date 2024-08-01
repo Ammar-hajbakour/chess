@@ -26,14 +26,10 @@
   min-width: 150px;
 }
 
-/* styling input element */
-input {
-  width: 158px;
-  padding-block: 0.5rem;
-  padding-inline: 1rem;
-  border-radius: 5px;
-  border: 1px solid var(--accent-color);
-  background-color: transparent;
-  // font-size: 1rem;
-  color: white;
+.flex {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }

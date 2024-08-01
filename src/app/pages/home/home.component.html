@@ -5,26 +5,26 @@
   </button>
   <button
     class="chess-btn"
-    (click)="optionsDialogState = 'open'; gameType.set('against-friend')"
-  >
-    Play against a friend
-  </button>
-  <button
-    class="chess-btn"
-    (click)="optionsDialogState = 'open'; gameType.set('against-computer')"
+    (click)="optionsDialogState = 'open'; gameType.set('stockfish')"
   >
     Play against a computer
   </button>
+  <button
+    class="chess-btn"
+    (click)="optionsDialogState = 'open'; gameType.set('friend')"
+  >
+    Play against a friend
+  </button>
 </nav>
-
-@if(optionsDialogState=== 'open') {
+@if(optionsDialogState === 'open'){ @if(gameId === undefined) {
 <div class="dialog">
   <img src="assets/intro.png" alt="chess" />
-  @if(gameType() === 'against-friend') {
+  @if(gameType() === 'friend') {
   <div class="actions">
     <small>Nickname</small>
     <input
-      (change)="(user)"
+      #nikname
+      (change)="user = nikname.value"
       type="text"
       placeholder="John Doe"
       required
@@ -33,7 +33,7 @@
     />
   </div>
 
-  } @if(gameType() === 'against-computer') {
+  } @if(gameType() === 'stockfish') {
 
   <div class="actions">
     <small>Level</small>
@@ -67,11 +67,27 @@
   </div>
 
   <button type="submit" class="chess-btn play" (click)="startGame()">
-    {{ gameType() === "against-friend" ? "Create Game" : "Start Game" }}
+    {{ gameType() === "friend" ? "Create Game" : "Start Game" }}
   </button>
 
   <span class="close-dialog" (click)="optionsDialogState = 'close'">
     &times;
   </span>
 </div>
-}
+} @else {
+<div class="dialog">
+  <img src="assets/intro.png" alt="chess" />
+  <div class="actions">
+    <small>Game Link You Can Share</small>
+    <input
+      type="text"
+      [value]="gameLink"
+      style="min-width: 350px; max-width: 90%"
+    />
+  </div>
+  <div class="flex">
+    <button class="chess-btn" (click)="copyLink()">Copy Link</button>
+    <button class="chess-btn" (click)="joinGame()">Join Game</button>
+  </div>
+</div>
+} }

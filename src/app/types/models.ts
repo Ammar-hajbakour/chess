@@ -1,4 +1,4 @@
-import { Color, FENChar } from "../chess-logic/types";
+import { Color, FENChar, MoveList } from "../chess-logic/types";
 
 
 export type StockfishQueryParams = {
@@ -23,12 +23,18 @@ export type StockfishResponse = {
 }
 
 export type GameOptions = {
-  type: 'local' | 'against-friend' | 'against-computer';
-  color: Color;
-  level: number | null;
+  type: 'local' | 'friend' | 'stockfish';
+  color?: Color;
+  whitePlayer: string,
   allowSelectingOtherPlayerPieces: boolean;
+  level: number | null;
 }
-export type DBGame = GameOptions & { user: string, moves: string[] };
+export enum GameStatus {
+  Active = 'active',
+  Closed = 'closed',
+  Finished = 'finish'
+}
+export type DBGame = GameOptions & { moves: string[], status: GameStatus, winner: Color | undefined, gameOverMessage: string | undefined };
 export const stockfishLevels: Readonly<Record<number, number>> = {
   1: 10,
   2: 11,

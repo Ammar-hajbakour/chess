@@ -3,10 +3,10 @@ import { Piece } from "./piece";
 
 export class King extends Piece {
   private _hasMoved: boolean = false;
-  public get hasMoved(): boolean {
+  get hasMoved(): boolean {
     return this._hasMoved;
   }
-  public set hasMoved(_) {
+  set hasMoved(_) {
     this._hasMoved = true;
   }
   protected override _FENChar: FENChar;

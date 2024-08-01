@@ -10,9 +10,10 @@ import { ChessMove, StockfishQueryParams, stockfishLevels, StockfishResponse, Ga
 export class StockfishService {
   private readonly api: string = "https://stockfish.online/api/s/v2.php";
 
-  public stockfishOptions$ = new BehaviorSubject<GameOptions>({
-    type: 'against-computer',
-    color: Color.White,
+  stockfishOptions$ = new BehaviorSubject<GameOptions>({
+    type: 'stockfish',
+    color: Color.Black,
+    whitePlayer: 'stockfish',
     level: 1,
     allowSelectingOtherPlayerPieces: false
   });
@@ -23,25 +24,24 @@ export class StockfishService {
     return string.charCodeAt(0) - "a".charCodeAt(0);
   }
 
-  private promotedPiece(piece: string | undefined): FENChar | null {
+  private promotedPiece(piece: string | undefined, stockfishColor: Color): FENChar | null {
     if (!piece) return null;
-    const computerColor: Color = this.stockfishOptions$.value.color;
-    if (piece === "n") return computerColor === Color.White ? FENChar.WhiteKnight : FENChar.BlackKnight;
-    if (piece === "b") return computerColor === Color.White ? FENChar.WhiteBishop : FENChar.BlackBishop;
-    if (piece === "r") return computerColor === Color.White ? FENChar.WhiteRook : FENChar.BlackRook;
-    return computerColor === Color.White ? FENChar.WhiteQueen : FENChar.BlackQueen;
+    if (piece === "n") return stockfishColor === Color.White ? FENChar.WhiteKnight : FENChar.BlackKnight;
+    if (piece === "b") return stockfishColor === Color.White ? FENChar.WhiteBishop : FENChar.BlackBishop;
+    if (piece === "r") return stockfishColor === Color.White ? FENChar.WhiteRook : FENChar.BlackRook;
+    return stockfishColor === Color.White ? FENChar.WhiteQueen : FENChar.BlackQueen;
   }
 
-  private moveFromStockfishString(move: string): ChessMove {
+  private moveFromStockfishString(move: string, stockfishColor: Color): ChessMove {
     const prevY: number = this.convertColumnLetterToYCoord(move[0]);
     const prevX: number = Number(move[1]) - 1;
     const newY: number = this.convertColumnLetterToYCoord(move[2]);
     const newX: number = Number(move[3]) - 1;
-    const promotedPiece = this.promotedPiece(move[4]);
+    const promotedPiece = this.promotedPiece(move[4], stockfishColor);
     return { prevX, prevY, newX, newY, promotedPiece };
   }
 
-  public getBestMove(fen: string): Observable<ChessMove> {
+  getBestMove(fen: string, stockfishColor: Color): Observable<ChessMove> {
     const queryParams: StockfishQueryParams = {
       fen,
       depth: stockfishLevels[this.stockfishOptions$.value.level as number],
@@ -53,7 +53,7 @@ export class StockfishService {
       .pipe(
         switchMap(response => {
           const bestMove: string = response.bestmove.split(" ")[1];
-          return of(this.moveFromStockfishString(bestMove));
+          return of(this.moveFromStockfishString(bestMove, stockfishColor));
         })
       )
   }

@@ -1,5 +1,5 @@
 
-import { columns } from "../types/models";
+import { ChessMove, columns, DBGame } from "../types/models";
 import { King } from "./pieces/king";
 import { Pawn } from "./pieces/pawn";
 import { Piece } from "./pieces/piece";
@@ -7,8 +7,8 @@ import { Rook } from "./pieces/rook";
 import { Color, LastMove } from "./types";
 
 export class FENConverter {
-
   static initialPosition: string = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
   convertBoardToFEN(board: (Piece | null)[][], playerColor: Color, lastMove: LastMove | undefined, fiftyMoveRuleCounter: number, numberOfFullMoves: number): string {
     let FEN = "";
     for (let i = 7; i >= 0; i--) {

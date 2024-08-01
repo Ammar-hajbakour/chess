@@ -1,0 +1,58 @@
+<div class="actions">
+  <button
+    class="chess-btn"
+    [disabled]="gameHistoryPointer === 0"
+    (click)="showPreviousMoveHandler(0)"
+  >
+    <img
+      style="transform: rotate(180deg)"
+      src="assets/icons/next-to-end.png"
+      alt=""
+    />
+  </button>
+  <button
+    class="chess-btn"
+    [disabled]="gameHistoryPointer === 0"
+    (click)="showPreviousMoveHandler(gameHistoryPointer - 1)"
+  >
+    <img style="transform: rotate(180deg)" src="assets/icons/next.png" alt="" />
+  </button>
+  <button
+    class="chess-btn"
+    [disabled]="gameHistoryPointer === gameHistoryLength - 1"
+    (click)="showPreviousMoveHandler(gameHistoryPointer + 1)"
+  >
+    <img src="assets/icons/next.png" alt="" />
+  </button>
+  <button
+    class="chess-btn"
+    [disabled]="gameHistoryPointer === gameHistoryLength - 1"
+    (click)="showPreviousMoveHandler(gameHistoryLength - 1)"
+  >
+    <img src="assets/icons/next-to-end.png" alt="" />
+  </button>
+</div>
+
+<div class="move-list" #mList>
+  @for(move of moveList; track move; let moveNumber=$index){
+  <div class="row">
+    <span class="move-number">{{ moveNumber + 1 }}. </span>
+    <div
+      class="move"
+      [ngClass]="{ 'current-move': moveNumber * 2 + 1 === gameHistoryPointer }"
+      (click)="showPreviousMoveHandler(moveNumber * 2 + 1)"
+    >
+      {{ move[0] }}
+    </div>
+    @if (move[1]) {
+    <div
+      class="move"
+      [ngClass]="{ 'current-move': moveNumber * 2 + 2 === gameHistoryPointer }"
+      (click)="showPreviousMoveHandler(moveNumber * 2 + 2)"
+    >
+      {{ move[1] }}
+    </div>
+    }
+  </div>
+  }
+</div>

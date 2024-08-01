@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { LocalBoardComponent } from './components/local-board/local-board.component';
+import { MainBoardComponent } from './components/chess-board/main-board.component';
 import { HomeComponent } from './pages/home/home.component';
 
 @Component({

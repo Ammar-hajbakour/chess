@@ -59,7 +59,7 @@ export type LastMove = {
   currY: number;
   moveType: Set<MoveType>;
 }
-
+export type Move = LastMove & { promotedPiece: FENChar | null };
 type KingChecked = {
   isInCheck: true;
   x: number;

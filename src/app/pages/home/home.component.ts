@@ -2,10 +2,12 @@ import { NgClass } from '@angular/common';
 import { AfterViewInit, Component, inject, signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Color } from '../../chess-logic/types';
-import { DBGame, GameOptions } from '../../types/models';
+import { DBGame, GameOptions, GameStatus } from '../../types/models';
 import { FirebaseService } from '../../services/firebase.service';
+import { ChessBoardService } from '../../services/chess-board.service';
+import { FENConverter } from '../../chess-logic/FENConverter';
 
-type GameType = 'local' | 'against-friend' | 'against-computer';
+type GameType = 'local' | 'friend' | 'stockfish';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -15,9 +17,11 @@ type GameType = 'local' | 'against-friend' | 'against-computer';
 })
 export class HomeComponent {
   router = inject(Router);
+  chessBoardService = inject(ChessBoardService);
   firebase = inject(FirebaseService);
 
   options: GameOptions = {
+    whitePlayer: 'guest',
     color: Color.White,
     level: null,
     type: 'local',
@@ -29,20 +33,23 @@ export class HomeComponent {
   currenStockfishLevel = 1
   optionsDialogState: 'close' | 'open' = 'close';
 
-  user = 'user'
-
-
+  user = ''
+  gameId: string | undefined = undefined;
+  gameLink: string | undefined = undefined;
   async startGame() {
-
     switch (this.gameType()) {
-      case 'against-friend':
-        this.options.type = 'against-friend';
+      case 'friend':
+        this.options.type = 'friend';
+        this.options.color = this.piecesColor === 'w' ? Color.White : Color.Black;
+        this.options.whitePlayer = this.piecesColor === 'w' ? this.user : 'guest';
         this.options.allowSelectingOtherPlayerPieces = false
         break;
 
-      case 'against-computer':
-        this.options.type = 'against-computer';
+      case 'stockfish':
+        this.options.type = 'stockfish';
+        this.options.color = this.piecesColor === 'w' ? Color.White : Color.Black;
         this.options.level = this.currenStockfishLevel;
+        this.options.whitePlayer = this.piecesColor === 'w' ? 'guest' : 'stockfish';
         this.options.allowSelectingOtherPlayerPieces = false
         break;
 
@@ -50,28 +57,34 @@ export class HomeComponent {
         this.options.allowSelectingOtherPlayerPieces = true
         break;
     }
-    this.options.color = this.piecesColor === 'w' ? Color.White : Color.Black;
     if (!this.options) return;
 
-    if (this.options.type !== 'against-friend') {
+    if (this.options.type !== 'friend') {
       this.router.navigate([`/game`], { state: { options: this.options } });
       return
     }
+    localStorage.setItem('USER', this.user)
+    await this.createGame()
+  }
 
+  async createGame() {
     const dbGame: DBGame = {
       ...this.options,
-      user: this.user,
-      moves: []
+      moves: [],
+      status: GameStatus.Active,
+      winner: undefined,
+      gameOverMessage: undefined
     }
-    // const game = this.firebase.createGame(dbGame)
-    // console.log(game);
 
-    // show dialog with the link with join game button
-    // const gameLink = window.location.origin + `/game/${game.key}`
-    // console.log(gameLink);
-
-    // navigate to game when clicks on join game button
-    // this.router.navigate([`/game`, game.key]);
+    this.gameId = await this.firebase.createGame(dbGame)
+    this.gameLink = window.location.origin + `/game/${this.gameId}`
+  }
+  joinGame() {
+    this.router.navigate([`/game`, this.gameId]);
+  }
+  copyLink() {
+    if (!this.gameLink) return
+    navigator.clipboard.writeText(this.gameLink);
   }
 }
 
