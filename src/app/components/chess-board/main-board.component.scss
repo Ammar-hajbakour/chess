@@ -141,7 +141,9 @@
   .square {
     &:hover {
       &::after {
-        animation: fullUp 0.25s forwards;
+        height: 75px;
+        width: 75px;
+        visibility: visible;
       }
     }
 
@@ -182,7 +184,9 @@
 
 .selected-square {
   &::after {
-    animation: fullUp 0.25s forwards;
+    height: 75px;
+    width: 75px;
+    visibility: visible;
   }
 }
 
@@ -190,13 +194,12 @@
 
 .safe-square {
   position: absolute;
-  height: 0;
-  width: 0;
-  visibility: hidden;
   background-color: #1c63f280;
   border-radius: 50%;
   z-index: 100;
-  animation: full-up 0.25s forwards;
+  height: 20px;
+  width: 20px;
+  visibility: visible;
 }
 
 
@@ -213,56 +216,6 @@
   background-color: #FACA15;
 }
 
-@keyframes fullUp {
-  to {
-    height: 75px;
-    width: 75px;
-    visibility: visible;
-  }
-}
-
-@keyframes fullUp-medium {
-  to {
-    height: 50px;
-    width: 50px;
-    visibility: visible;
-  }
-}
-
-@keyframes fullUp-small {
-  to {
-    height: 32px;
-    width: 32px;
-    visibility: visible;
-  }
-}
-
-@keyframes full-up {
-  to {
-    height: 20px;
-    width: 20px;
-    visibility: visible;
-  }
-}
-
-@keyframes full-up-medium {
-  to {
-    height: 15px;
-    width: 15px;
-    visibility: visible;
-  }
-}
-
-@keyframes full-up-small {
-  to {
-    height: 10px;
-    width: 10px;
-    visibility: visible;
-  }
-}
-
-
-
 @media (min-width: 515px) and (max-width: 715px) {
 
   .square {
@@ -270,32 +223,6 @@
     width: 50px;
   }
 
-  .safe-square {
-    animation: full-up-medium 0.25s forwards;
-  }
-
-  .selected-square {
-    &::after {
-      animation: fullUp-medium 0.25s forwards;
-    }
-  }
-
-  .piece {
-    width: 40px;
-  }
-
-  .promotion-dialog {
-    .square:hover {
-      &::after {
-        animation: fullUp-medium 0.25s forwards;
-      }
-    }
-  }
-}
-
-@media (hover: none) and (min-width: 515px) and (max-width: 715px) {
-
-  /* No hovering available - generally a touchscreen */
   .safe-square {
     height: 15px;
     width: 15px;
@@ -310,6 +237,10 @@
     }
   }
 
+  .piece {
+    width: 40px;
+  }
+
   .promotion-dialog {
     .square:hover {
       &::after {
@@ -321,36 +252,13 @@
   }
 }
 
+
 @media (max-width: 514px) {
   .square {
     height: 32px;
     width: 32px;
   }
 
-  .safe-square {
-    animation: full-up-small 0.25s forwards;
-  }
-
-  .selected-square {
-    &::after {
-      animation: fullUp-small 0.25s forwards;
-    }
-  }
-
-  .piece {
-    width: 25px;
-  }
-
-  .promotion-dialog {
-    .square:hover {
-      &::after {
-        animation: fullUp-small 0.25s forwards;
-      }
-    }
-  }
-}
-
-@media (hover: none) and (max-width: 515px) {
   .safe-square {
     height: 10px;
     width: 10px;
@@ -363,6 +271,10 @@
       width: 32px;
       visibility: visible;
     }
+  }
+
+  .piece {
+    width: 25px;
   }
 
   .promotion-dialog {
