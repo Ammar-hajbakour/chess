@@ -34,7 +34,7 @@ export enum GameStatus {
   Closed = 'closed',
   Finished = 'finish'
 }
-export type DBGame = GameOptions & { moves: string[], status: GameStatus, winner: Color | undefined, gameOverMessage: string | undefined };
+export type DBGame = GameOptions & { moves: string[], status: GameStatus, winner: Color | null, gameOverMessage: string | null };
 export const stockfishLevels: Readonly<Record<number, number>> = {
   1: 10,
   2: 11,

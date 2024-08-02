@@ -36,6 +36,8 @@ export class HomeComponent {
   user = ''
   gameId: string | undefined = undefined;
   gameLink: string | undefined = undefined;
+
+  isCopied = false;
   async startGame() {
     switch (this.gameType()) {
       case 'friend':
@@ -63,6 +65,10 @@ export class HomeComponent {
       this.router.navigate([`/game`], { state: { options: this.options } });
       return
     }
+    if (this.user.length < 3 || this.user.length > 20 || this.user === 'guest') {
+      alert('Invalid nickname, it should be between 3 and 20 characters.')
+      return
+    }
     localStorage.setItem('USER', this.user)
     await this.createGame()
   }
@@ -72,8 +78,8 @@ export class HomeComponent {
       ...this.options,
       moves: [],
       status: GameStatus.Active,
-      winner: undefined,
-      gameOverMessage: undefined
+      winner: null,
+      gameOverMessage: null
     }
 
     this.gameId = await this.firebase.createGame(dbGame)
@@ -85,6 +91,10 @@ export class HomeComponent {
   copyLink() {
     if (!this.gameLink) return
     navigator.clipboard.writeText(this.gameLink);
+    this.isCopied = true;
+    setTimeout(() => {
+      this.isCopied = false;
+    }, 2000)
   }
 }
 

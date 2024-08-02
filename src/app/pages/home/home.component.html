@@ -86,7 +86,13 @@
     />
   </div>
   <div class="flex">
-    <button class="chess-btn" (click)="copyLink()">Copy Link</button>
+    <button
+      class="chess-btn"
+      [ngClass]="{ copied: isCopied }"
+      (click)="copyLink()"
+    >
+      {{ isCopied ? "Copied !" : "Copy Link" }}
+    </button>
     <button class="chess-btn" (click)="joinGame()">Join Game</button>
   </div>
 </div>

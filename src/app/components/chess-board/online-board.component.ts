@@ -38,8 +38,7 @@ export class OnlineBoardComponent extends MainBoardComponent implements OnInit, 
       next: async (res) => {
         if (!res) return
         this.gameStatus = res.status
-
-        this.chessBoard._gameOverMessage = res.gameOverMessage
+        if (res.gameOverMessage) this.chessBoard._gameOverMessage = res.gameOverMessage
         this.gameOverMessage.set(this.chessBoard.gameOverMessage);
         if (!res.moves?.length) return
         if (res.moves[res.moves?.length - 1] === this.chessBoard.moves[this.chessBoard.moves?.length - 1]) return
@@ -103,7 +102,7 @@ export class OnlineBoardComponent extends MainBoardComponent implements OnInit, 
     this.friendSubscriptions$.unsubscribe();
   }
 
-  private updateGame(status: GameStatus = GameStatus.Active, winner: Color | undefined = undefined, gameOverMessage: string | undefined = undefined): void {
+  private updateGame(status: GameStatus = GameStatus.Active, winner: Color | null = null, gameOverMessage: string | null = null): void {
     const payload: DBGame = {
       ...this.options,
       moves: this.chessBoard.moves,
