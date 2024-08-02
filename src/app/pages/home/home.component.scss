@@ -37,3 +37,15 @@
 .copied {
   background-color: var(--primary-color);
 }
+
+input[type="text"].error {
+  border: 1px solid var(--primary-color);
+}
+
+small.error {
+  color: var(--primary-color);
+  font-size: 0.6rem;
+  display: inline-block;
+  width: 300px;
+  height: 25px;
+}

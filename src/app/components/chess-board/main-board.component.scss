@@ -261,6 +261,8 @@
   }
 }
 
+
+
 @media (min-width: 515px) and (max-width: 715px) {
 
   .square {
@@ -291,6 +293,34 @@
   }
 }
 
+@media (hover: none) and (min-width: 515px) and (max-width: 715px) {
+
+  /* No hovering available - generally a touchscreen */
+  .safe-square {
+    height: 15px;
+    width: 15px;
+    visibility: visible;
+  }
+
+  .selected-square {
+    &::after {
+      height: 50px;
+      width: 50px;
+      visibility: visible;
+    }
+  }
+
+  .promotion-dialog {
+    .square:hover {
+      &::after {
+        height: 50px;
+        width: 50px;
+        visibility: visible;
+      }
+    }
+  }
+}
+
 @media (max-width: 514px) {
   .square {
     height: 32px;
@@ -315,6 +345,32 @@
     .square:hover {
       &::after {
         animation: fullUp-small 0.25s forwards;
+      }
+    }
+  }
+}
+
+@media (hover: none) and (max-width: 515px) {
+  .safe-square {
+    height: 10px;
+    width: 10px;
+    visibility: visible;
+  }
+
+  .selected-square {
+    &::after {
+      height: 32px;
+      width: 32px;
+      visibility: visible;
+    }
+  }
+
+  .promotion-dialog {
+    .square:hover {
+      &::after {
+        height: 32px;
+        width: 32px;
+        visibility: visible;
       }
     }
   }

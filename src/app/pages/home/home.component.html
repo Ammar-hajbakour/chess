@@ -21,18 +21,14 @@
   <img src="assets/intro.png" alt="chess" />
   @if(gameType() === 'friend') {
   <div class="actions">
-    <small>Nickname</small>
+    <small>Nick Name</small>
     <input
       #nikname
       (change)="user = nikname.value"
       type="text"
       placeholder="John Doe"
-      required
-      minlength="3"
-      maxlength="20"
     />
   </div>
-
   } @if(gameType() === 'stockfish') {
 
   <div class="actions">
@@ -73,6 +69,10 @@
   <span class="close-dialog" (click)="optionsDialogState = 'close'">
     &times;
   </span>
+
+  <small [hidden]="!validationError" class="error">{{
+    validationError?.message
+  }}</small>
 </div>
 } @else {
 <div class="dialog">

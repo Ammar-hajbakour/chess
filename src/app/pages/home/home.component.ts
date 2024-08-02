@@ -38,6 +38,8 @@ export class HomeComponent {
   gameLink: string | undefined = undefined;
 
   isCopied = false;
+
+  validationError: { message: string } | null = null;
   async startGame() {
     switch (this.gameType()) {
       case 'friend':
@@ -66,7 +68,9 @@ export class HomeComponent {
       return
     }
     if (this.user.length < 3 || this.user.length > 20 || this.user === 'guest') {
-      alert('Invalid nickname, it should be between 3 and 20 characters.')
+      this.validationError = {
+        message: 'Invalid nickname, it should be between 3 and 20 characters.'
+      }
       return
     }
     localStorage.setItem('USER', this.user)
