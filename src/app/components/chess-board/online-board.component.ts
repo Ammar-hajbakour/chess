@@ -28,7 +28,6 @@ export class OnlineBoardComponent extends MainBoardComponent implements OnInit, 
   private readonly localStorageUser = localStorage.getItem('USER') ?? 'guest';
   private friendColor!: Color
   private gameStatus!: GameStatus
-  private lm = signal<ChessMove | null>(null)
 
   isReloaded = true;
   constructor() {
@@ -93,10 +92,7 @@ export class OnlineBoardComponent extends MainBoardComponent implements OnInit, 
     const { x: prevX, y: prevY } = this.selectedSquare;
     this.postMove(this.newMove(prevX, prevY, newX, newY, piece));
   }
-  override move(x: number, y: number): void {
-    super.move(x, y);
-    if (this.chessBoard.isGameOver) this.updateGame(GameStatus.Finished, this.playerColor, this.chessBoard.gameOverMessage);
-  }
+
   override ngOnDestroy(): void {
     super.ngOnDestroy();
     this.friendSubscriptions$.unsubscribe();
@@ -114,10 +110,11 @@ export class OnlineBoardComponent extends MainBoardComponent implements OnInit, 
 
   }
   postMove(newMove: DBMove): void {
-    if (this.chessBoard.isGameOver) return
+    if (this.gameStatus === GameStatus.Finished) return
     const n_m = JSON.stringify(newMove).split('[').join('').split(']').join('').split(',').join('').split('"').join('');
     this.chessBoard._moves.push(n_m);
     this.updateGame();
+    if (this.chessBoard.isGameOver) this.updateGame(GameStatus.Finished, this.playerColor, this.chessBoard.gameOverMessage);
   }
   private newMove = (prevX: number, prevY: number, newX: number, newY: number, promotedPiece: FENChar | null): DBMove => {
     return promotedPiece ?

@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
+  base_path: '/game/',
   firebaseConfig: {
 
     apiKey: "AIzaSyBMrk6turfx3WNnz4h0Q4A2u1QUiaF_ZcA",

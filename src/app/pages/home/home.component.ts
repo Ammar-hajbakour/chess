@@ -6,6 +6,7 @@ import { DBGame, GameOptions, GameStatus } from '../../types/models';
 import { FirebaseService } from '../../services/firebase.service';
 import { ChessBoardService } from '../../services/chess-board.service';
 import { FENConverter } from '../../chess-logic/FENConverter';
+import { environment } from '../../../environments/environment';
 
 type GameType = 'local' | 'friend' | 'stockfish';
 @Component({
@@ -87,7 +88,7 @@ export class HomeComponent {
     }
 
     this.gameId = await this.firebase.createGame(dbGame)
-    this.gameLink = window.location.origin + `/game/${this.gameId}`
+    this.gameLink = window.location.origin + environment.base_path + this.gameId
   }
   joinGame() {
     this.router.navigate([`/game`, this.gameId]);
