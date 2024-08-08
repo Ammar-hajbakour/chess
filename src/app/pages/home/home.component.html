@@ -1,4 +1,5 @@
-<img src="assets/intro.png" alt="chess" />
+<img src="assets/chess-intro.png" alt="chess" />
+
 <nav>
   <button class="chess-btn" (click)="gameType.set('local'); startGame()">
     Local Game
@@ -18,7 +19,7 @@
 </nav>
 @if(optionsDialogState === 'open'){ @if(gameId === undefined) {
 <div class="dialog">
-  <img src="assets/intro.png" alt="chess" />
+  <img class="logo" src="assets/logo.svg" alt="chess" />
   @if(gameType() === 'friend') {
   <div class="actions">
     <small>Nick Name</small>
@@ -76,7 +77,7 @@
 </div>
 } @else {
 <div class="dialog">
-  <img src="assets/intro.png" alt="chess" />
+  <img class="logo" src="assets/logo.svg" alt="chess" />
   <div class="actions">
     <small>Game Link You Can Share</small>
     <input

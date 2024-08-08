@@ -12,4 +12,8 @@ import { HomeComponent } from './pages/home/home.component';
 })
 export class AppComponent {
   title = 'chess';
+  isMenuOpen = false;
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
 }

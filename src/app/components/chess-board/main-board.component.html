@@ -25,8 +25,8 @@
   </div>
 </div>
 }
-<main class="board" [ngClass]="{ rotated: flipMode() }">
-  <div class="row">
+<main #board class="board" [ngClass]="{ rotated: flipMode() }">
+  <!-- <div class="row">
     <div
       class="square"
       style="
@@ -47,16 +47,16 @@
       {{ x }}
     </div>
     }
-  </div>
+  </div> -->
   @for(row of chessBoardView(); track row; let x = $index) {
   <div class="row">
-    <div
+    <!-- <div
       [ngClass]="{ rotated: flipMode() }"
       class="square"
       style="width: fit-content; padding-inline: 0.25rem"
     >
       {{ x + 1 }}
-    </div>
+    </div> -->
     @for(piece of row; track piece; let y = $index) {
 
     <div
@@ -109,32 +109,30 @@
   }
 </main>
 <aside>
-  <div class="overlay">
-    <div class="actions">
-      <button class="chess-btn" (click)="flipBoard()">
-        <img src="assets/icons/flip.png" alt="flip" />
-      </button>
-      <button
-        class="chess-btn"
-        [hidden]="this.chessBoard._isGameOver"
-        (click)="handleActions('surrender')"
-      >
-        <img src="assets/icons/finish.png" alt="surrendering" />
-      </button>
-      @if(this.options.type !== 'friend'){
-      <button class="chess-btn" (click)="handleActions('reset')">
-        <img src="assets/icons/restart.png" alt="restart" />
-      </button>
-      }
-      <button class="chess-btn" (click)="handleActions('home')">
-        <img src="assets/icons/home.png" alt="home" />
-      </button>
-    </div>
-    <move-list
-      [moveList]="moveList"
-      [gameHistoryPointer]="gameHistoryPointer"
-      [gameHistoryLength]="gameHistory.length"
-      (showPreviousMove)="showPreviousMove($event)"
-    ></move-list>
+  <div class="actions">
+    <button class="chess-btn" (click)="flipBoard()">
+      <img src="assets/icons/flip.png" alt="flip" />
+    </button>
+    <button
+      class="chess-btn"
+      [hidden]="this.chessBoard._isGameOver"
+      (click)="handleActions('surrender')"
+    >
+      <img src="assets/icons/finish.png" alt="surrendering" />
+    </button>
+    @if(this.options.type !== 'friend'){
+    <button class="chess-btn" (click)="handleActions('reset')">
+      <img src="assets/icons/restart.png" alt="restart" />
+    </button>
+    }
+    <button class="chess-btn" (click)="handleActions('home')">
+      <img src="assets/icons/home.png" alt="home" />
+    </button>
   </div>
+  <move-list
+    [moveList]="moveList"
+    [gameHistoryPointer]="gameHistoryPointer"
+    [gameHistoryLength]="gameHistory.length"
+    (showPreviousMove)="showPreviousMove($event)"
+  ></move-list>
 </aside>

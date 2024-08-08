@@ -1,2 +1,20 @@
-<!-- <chess-board></chess-board> -->
-<router-outlet></router-outlet>
+<header>
+  <a href="#"><img class="logo" src="assets/logo.svg" alt="logo" /></a>
+
+  <nav [class.open]="isMenuOpen" [class.close]="!isMenuOpen">
+    <a href="#"
+      ><img src="assets/icons/login.png" alt="login" /> <span>Login</span></a
+    >
+    <a href="#"
+      ><img src="assets/icons/profile.png" alt="profile" /><span
+        >My Profile</span
+      ></a
+    >
+  </nav>
+  <a href="javascript:void(0)" (click)="toggleMenu()" class="menu"
+    ><img src="assets/icons/menu.png" alt="menu"
+  /></a>
+</header>
+<div class="app-container">
+  <router-outlet></router-outlet>
+</div>

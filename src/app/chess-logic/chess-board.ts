@@ -103,22 +103,22 @@ export class ChessBoard {
     return this._gameHistory;
   }
 
-  resetBoard() {
-    this.chessBoard = initialBoard
-    this._playerColor = Color.White;
-    this._safeSquares = this.findSafeSqures();
-    this._lastMove = undefined;
-    this._checkState = { isInCheck: false };
-    this._isGameOver = false;
-    this._gameOverMessage = undefined;
-    this._boardAsFEN = FENConverter.initialPosition;
-    this._moveList = [];
-    this._moves = [];
-    this._gameHistory = [{ board: this.chessBoardView, lastMove: this._lastMove, checkState: this._checkState }];
-    this.fiftyMoveRuleCounter = 0;
-    this.threeFoldRepetitionFlag = false;
-    this.threeFoldRepetitionDictionary = new Map<string, number>();
-  }
+  // resetBoard() {
+  //   this.chessBoard = initialBoard
+  //   this._playerColor = Color.White;
+  //   this._safeSquares = this.findSafeSqures();
+  //   this._lastMove = undefined;
+  //   this._checkState = { isInCheck: false };
+  //   this._isGameOver = false;
+  //   this._gameOverMessage = undefined;
+  //   this._boardAsFEN = FENConverter.initialPosition;
+  //   this._moveList = [];
+  //   this._moves = [];
+  //   this._gameHistory = [{ board: this.chessBoardView, lastMove: this._lastMove, checkState: this._checkState }];
+  //   this.fiftyMoveRuleCounter = 0;
+  //   this.threeFoldRepetitionFlag = false;
+  //   this.threeFoldRepetitionDictionary = new Map<string, number>();
+  // }
 
   static isSquareDark(x: number, y: number): boolean {
     return x % 2 === 0 && y % 2 === 0 || x % 2 === 1 && y % 2 === 1;
@@ -211,11 +211,17 @@ export class ChessBoard {
           if (newPiece && newPiece.color === piece.color) continue;
 
           // need to restrict pawn moves in certain directions
+
+
           if (piece instanceof Pawn) {
+
+
             // cant move pawn two squares straight if there is piece infront of him
             if (dx === 2 || dx === -2) {
               if (newPiece) continue;
               if (this.chessBoard[newX + (dx === 2 ? -1 : 1)][newY]) continue;
+              // cant move pawn two squares straight if it has moved before
+              if (piece.hasMoved) continue;
             }
 
             // cant move pawn one square straight if piece is infront of him
@@ -317,10 +323,12 @@ export class ChessBoard {
     if (!piece || piece.color !== this._playerColor) return;
 
     const pieceSafeSquares: Coords[] | undefined = this._safeSquares.get(prevX + "," + prevY);
-    if (!pieceSafeSquares || !pieceSafeSquares.find(coords => coords.x === newX && coords.y === newY))
 
-      if ((piece instanceof Pawn || piece instanceof King || piece instanceof Rook) && !piece.hasMoved)
-        piece.hasMoved = true;
+    if (!pieceSafeSquares || !pieceSafeSquares.find(coords => coords.x === newX && coords.y === newY)) return;
+
+    if ((piece instanceof Pawn || piece instanceof King || piece instanceof Rook) && !piece.hasMoved)
+      piece.hasMoved = true;
+
 
     const moveType = new Set<MoveType>();
 

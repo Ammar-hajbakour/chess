@@ -1,12 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
 
 :root {
-  --primary-color: #af8b61;
-  ;
-  --accent-color: #656865;
-  --bg-color: #232323;
+  --accent-color: #4BB5B6;
+  --primary-color: #80b64b;
+  --deep-primary-color: #5c9947;
+  --secondary-color: #585755;
+  --brown: #B64C4B;
+  --purble: #814BB6;
+  --text-color: #ebecd0;
+  --bg-color: #121212;
   // --bg-color: #232323c5;
 }
+
 
 * {
   margin: 0;
@@ -20,30 +25,35 @@ html,
 body {
   height: 100%;
   background-color: var(--bg-color);
+  color: var(--text-color);
+  overflow-x: hidden;
 }
 
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.logo {
+  width: 120px;
 }
 
 .chess-btn {
-  border: 1px solid var(--accent-color);
+  border: 1px solid var(--secondary-color);
   padding: 0.5rem 0.65rem;
-  border-radius: 5px;
   background-color: transparent;
   color: white;
   cursor: pointer;
   width: fit-content;
-  transition: 0.25s ease;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 2px;
+  transition: 0.25s linear;
 
+
+  &.selected,
   &:not(:disabled):hover {
-    background-color: #333;
-    border-color: var(--primary-color);
-  }
-
-  &.selected {
-    background-color: #333;
+    color: var(--primary-color);
     border-color: var(--primary-color);
   }
 
@@ -62,7 +72,6 @@ body {
   width: 100%;
   height: 100vh;
   z-index: 100;
-  // background-color: rgba(0, 0, 0, 0.75);
   background-color: var(--bg-color);
   display: flex;
   flex-direction: column;
@@ -71,11 +80,11 @@ body {
   gap: 2rem;
 
   img {
-    width: 150px;
+    width: 250px;
+    filter: grayscale(100%);
   }
 
   p {
-    color: white;
     font-size: 20px;
     text-transform: capitalize;
     line-height: 2;
@@ -86,7 +95,6 @@ body {
   .close-dialog {
     font-size: 35px;
     cursor: pointer;
-    color: white;
     position: absolute;
     top: 1rem;
     right: 2rem;
@@ -109,7 +117,7 @@ body {
     top: -1.5rem;
     left: 50%;
     transform: translateX(-50%);
-    color: #555;
+    color: var(--secondary-color);
     width: 100%;
   }
 
@@ -127,12 +135,12 @@ body {
   button {
     img {
       width: 20px;
-      filter: grayscale(100%) sepia(100%) contrast(150%);
+      // filter: grayscale(100%);
       transition: 0.25s ease;
     }
 
     &:hover>img {
-      filter: grayscale(0);
+      filter: grayscale(100%);
     }
 
     &.selected {

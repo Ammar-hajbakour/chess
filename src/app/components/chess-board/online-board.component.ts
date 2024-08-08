@@ -4,7 +4,7 @@ import { Subscription, filter, firstValueFrom } from 'rxjs';
 import { Color, FENChar } from '../../chess-logic/types';
 import { StockfishService } from '../../services/stockfish.service';
 import { ChessBoardService, DBMove } from '../../services/chess-board.service';
-import { NgClass } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 import { MoveListComponent } from '../move-list/move-list.component';
 import { FriendService } from '../../services/friend.service';
 import { ChessMove, DBGame, GameStatus } from '../../types/models';
@@ -18,7 +18,7 @@ import { ChessBoard } from '../../chess-logic/chess-board';
   templateUrl: './main-board.component.html',
   styleUrls: ['./main-board.component.scss'],
   standalone: true,
-  imports: [NgClass, MoveListComponent]
+  imports: [NgClass, NgStyle, MoveListComponent]
 })
 export class OnlineBoardComponent extends MainBoardComponent implements OnInit, OnDestroy {
   private readonly gameId = inject(ActivatedRoute).snapshot.params['id']

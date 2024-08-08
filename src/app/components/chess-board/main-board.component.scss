@@ -2,72 +2,59 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1rem;
+  // gap: 1rem;
   position: relative;
 
   aside {
 
-    @media (max-width: 514px) {
-      min-width: 325px;
-    }
+    // @media (max-width: 514px) {
+    //   min-width: 325px;
+    // }
 
-    @media (min-width: 515px) {
-      min-width: 467px;
-    }
+    // @media (min-width: 515px) {
+    //   min-width: 467px;
+    // }
 
-    @media (min-width: 715px) {
-      min-width: 667px;
-    }
+    // @media (min-width: 715px) {
+    //   min-width: 667px;
+    // }
 
-    @media (min-width: 1080px) {
-      min-width: 400px;
-    }
+    // @media (min-width: 1080px) {
+    //   min-width: 400px;
+    // }
 
-    min-width: 400px;
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
 
-    background: url("../../../assets/intro.png") no-repeat center;
-    background-size: contain;
+    .actions {
+      button {
+        border: none;
 
-    .overlay {
-      width: 100%;
-      height: 100%;
-      background-color: #232323f5;
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-      border: 1px solid #444;
-      border-radius: 15px;
-
-      .actions {
-        button {
-          border: none;
-
-          &:hover {
-            background-color: transparent;
-          }
+        &:hover {
+          background-color: transparent;
         }
       }
     }
-  }
 
+  }
 
 }
 
 
 .board {
+  width: 100%;
+  aspect-ratio: 1/1;
   display: flex;
   justify-content: center;
   flex-direction: column-reverse;
-  width: fit-content;
-  gap: 0.25rem;
-  background-color: rgba(255, 255, 255, 0.75);
-  padding-inline-start: 0.50rem;
-  padding-inline-end: 1rem;
-  padding-block-start: 1rem;
-  padding-block-end: 0.25rem;
-  border-radius: 15px;
+  // gap: 1px;
+  // background-color: rgba(255, 255, 255, 0.3);
+  // padding: 0.5rem;
+  // border-radius: 15px;
   overflow: hidden;
   position: relative;
 }
@@ -77,20 +64,24 @@
 }
 
 .row {
-  width: fit-content;
+  width: 100%;
+  height: calc(100% / 8);
+  // flex-grow: 1;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 0.2rem;
+  // flex-direction: row;
+  // flex-wrap: wrap;
+  // gap: 1px;
 }
 
 .square {
+  // flex-grow: 1;
+  width: calc(100% / 8);
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 75px;
-  width: 75px;
-  border-radius: 10px;
+  // height: 75px;
+  // width: 75px;
+  // border-radius: 10px;
   position: relative;
   z-index: 10;
   font-size: 12px;
@@ -103,11 +94,11 @@
     content: '';
     position: absolute;
     z-index: -1;
-    border-radius: 10px;
+    // border-radius: 10px;
     height: 0;
     width: 0;
     background-color: #1C64F2;
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 15px 40px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 18px -6px inset;
+    // box-shadow: rgba(0, 0, 0, 0.2) 0px 15px 40px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 18px -6px inset;
 
     visibility: hidden;
   }
@@ -116,12 +107,10 @@
 .board-square {
   cursor: pointer;
   background-color: white;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 15px 40px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 18px -6px inset;
+
 }
 
-.flipped-shadow {
-  box-shadow: rgba(0, 0, 0, 0.2) 0px -15px 40px -12px inset, rgba(0, 0, 0, 0.3) 0px -18px 18px -6px inset;
-}
+
 
 
 .promotion-dialog {
@@ -171,6 +160,11 @@
 
 .dark {
   background-color: var(--primary-color);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 15px 40px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 18px -6px inset;
+}
+
+.dark.flipped-shadow {
+  box-shadow: rgba(0, 0, 0, 0.2) 0px -15px 40px -12px inset, rgba(0, 0, 0, 0.3) 0px -18px 18px -6px inset;
 }
 
 .light {
@@ -178,8 +172,7 @@
 }
 
 .piece {
-  width: 60px;
-  filter: grayscale(100) brightness(0.8) contrast(1.5);
+  width: 90%;
 }
 
 .selected-square {
@@ -216,74 +209,74 @@
   background-color: #FACA15;
 }
 
-@media (min-width: 515px) and (max-width: 715px) {
+// @media (min-width: 515px) and (max-width: 715px) {
 
-  .square {
-    height: 50px;
-    width: 50px;
-  }
+//   .square {
+//     height: 50px;
+//     width: 50px;
+//   }
 
-  .safe-square {
-    height: 15px;
-    width: 15px;
-    visibility: visible;
-  }
+//   .safe-square {
+//     height: 15px;
+//     width: 15px;
+//     visibility: visible;
+//   }
 
-  .selected-square {
-    &::after {
-      height: 50px;
-      width: 50px;
-      visibility: visible;
-    }
-  }
+//   .selected-square {
+//     &::after {
+//       height: 50px;
+//       width: 50px;
+//       visibility: visible;
+//     }
+//   }
 
-  .piece {
-    width: 40px;
-  }
+//   .piece {
+//     width: 40px;
+//   }
 
-  .promotion-dialog {
-    .square:hover {
-      &::after {
-        height: 50px;
-        width: 50px;
-        visibility: visible;
-      }
-    }
-  }
-}
+//   .promotion-dialog {
+//     .square:hover {
+//       &::after {
+//         height: 50px;
+//         width: 50px;
+//         visibility: visible;
+//       }
+//     }
+//   }
+// }
 
 
-@media (max-width: 514px) {
-  .square {
-    height: 32px;
-    width: 32px;
-  }
+// @media (max-width: 514px) {
+//   .square {
+//     height: 32px;
+//     width: 32px;
+//   }
 
-  .safe-square {
-    height: 10px;
-    width: 10px;
-    visibility: visible;
-  }
+//   .safe-square {
+//     height: 10px;
+//     width: 10px;
+//     visibility: visible;
+//   }
 
-  .selected-square {
-    &::after {
-      height: 32px;
-      width: 32px;
-      visibility: visible;
-    }
-  }
+//   .selected-square {
+//     &::after {
+//       height: 32px;
+//       width: 32px;
+//       visibility: visible;
+//     }
+//   }
 
-  .piece {
-    width: 25px;
-  }
+//   .piece {
+//     width: 25px;
+//   }
 
-  .promotion-dialog {
-    .square:hover {
-      &::after {
-        height: 32px;
-        width: 32px;
-        visibility: visible;
-      }
-    }
-  }
-}
+//   .promotion-dialog {
+//     .square:hover {
+//       &::after {
+//         height: 32px;
+//         width: 32px;
+//         visibility: visible;
+//       }
+//     }
+//   }
+// }

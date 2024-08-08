@@ -1,4 +1,4 @@
-import { Component, inject, Input, input, OnDestroy, OnInit, signal } from '@angular/core';
+import { AfterContentInit, AfterViewChecked, Component, ElementRef, inject, Input, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { SelectedSquare } from './models';
 import { Subscription, filter, fromEvent, tap } from 'rxjs';
 import { ChessBoard } from '../../chess-logic/chess-board';
@@ -6,7 +6,7 @@ import { ChessBoardService } from '../../services/chess-board.service';
 import { FENConverter } from '../../chess-logic/FENConverter';
 import { pieceImagePaths, FENChar, Color, SafeSquares, Coords, LastMove, CheckState, MoveList, GameHistory, MoveType } from '../../chess-logic/types';
 import { Router } from '@angular/router';
-import { NgClass } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 import { GameOptions } from '../../types/models';
 import { MoveListComponent } from '../move-list/move-list.component';
 
@@ -15,10 +15,10 @@ import { MoveListComponent } from '../move-list/move-list.component';
   templateUrl: './main-board.component.html',
   styleUrls: ['./main-board.component.scss'],
   standalone: true,
-  imports: [NgClass, MoveListComponent]
+  imports: [NgClass, NgStyle, MoveListComponent]
 })
-export class MainBoardComponent implements OnInit, OnDestroy {
-
+export class MainBoardComponent implements OnInit, OnDestroy, AfterViewChecked {
+  @ViewChild('board') board!: ElementRef<HTMLElement>;
   router = inject(Router);
   @Input() options!: GameOptions;
 
@@ -53,8 +53,15 @@ export class MainBoardComponent implements OnInit, OnDestroy {
   private subscriptions$ = new Subscription();
   soundsMuted = true
   confirmation: { img: string, message: string, action: () => void } | undefined = undefined
-  constructor(protected chessBoardService: ChessBoardService) { }
-
+  constructor(protected chessBoardService: ChessBoardService) {
+  }
+  ngAfterViewChecked(): void {
+    // this.resizeBoard()
+  }
+  // resizeBoard(): void {
+  //   const height = `${this.board.nativeElement.offsetWidth}px`
+  //   setTimeout(() => this.board.nativeElement.style.height = height, 0);
+  // }
   ngOnInit(): void {
     const keyEventSubscription$: Subscription = fromEvent<KeyboardEvent>(document, "keyup")
       .pipe(
@@ -79,6 +86,7 @@ export class MainBoardComponent implements OnInit, OnDestroy {
       .subscribe();
 
     this.subscriptions$.add(keyEventSubscription$);
+
   }
 
   ngOnDestroy(): void {

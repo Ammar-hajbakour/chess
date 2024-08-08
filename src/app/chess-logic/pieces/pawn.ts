@@ -6,7 +6,7 @@ export class Pawn extends Piece {
   get hasMoved(): boolean {
     return this._hasMoved;
   }
-  set hasMoved(_) {
+  set hasMoved(value: boolean) {
     this._hasMoved = true;
     this._directions = [
       { x: 1, y: 0 },

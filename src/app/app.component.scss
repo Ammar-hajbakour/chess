@@ -6,4 +6,125 @@
   justify-content: center;
   align-items: center;
   position: relative;
+
+  header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    max-width: 1200px;
+    margin-inline: auto;
+    background-color: var(--bg-color);
+    position: relative;
+    z-index: 3;
+
+
+
+    .menu {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 25px;
+      position: relative;
+      transition: all .25s ease;
+
+      img {
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        z-index: 3;
+      }
+
+      // &:hover {
+      //   background-color: #333;
+      // }
+    }
+
+    nav {
+      // visibility: hidden;
+      transition: all .25s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 1rem;
+      position: absolute;
+      right: 8px;
+      width: 0;
+      background-color: #232323;
+      padding-block: 1rem;
+      border-radius: 5px;
+      padding: 1rem;
+      z-index: 2;
+
+      a {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 14px;
+        text-decoration: none;
+        color: var(--text-color);
+        border-inline: 5px solid transparent;
+        border-radius: 8px;
+        padding-inline: 0.5rem;
+        transition: border 0.25s ease;
+
+        &:hover {
+          border-color: var(--secondary-color);
+        }
+      }
+
+      button {
+        font-size: 14px;
+        transition: 0.25s ease;
+      }
+
+      img {
+        width: 30px;
+        height: 30px;
+      }
+
+
+
+      &.open>* {
+        opacity: 1;
+
+      }
+
+      &.close>* {
+        opacity: 0;
+      }
+    }
+
+
+    nav.open {
+      height: auto;
+      width: 220px;
+      top: 62px;
+    }
+
+    nav.close {
+      width: 30px;
+      height: 18px;
+      top: 1rem;
+    }
+  }
+
+  .app-container {
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 0;
+  }
 }

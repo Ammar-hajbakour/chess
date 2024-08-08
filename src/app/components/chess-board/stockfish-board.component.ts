@@ -4,7 +4,7 @@ import { Subscription, firstValueFrom } from 'rxjs';
 import { Color } from '../../chess-logic/types';
 import { StockfishService } from '../../services/stockfish.service';
 import { ChessBoardService } from '../../services/chess-board.service';
-import { NgClass } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 import { MoveListComponent } from '../move-list/move-list.component';
 
 
@@ -13,7 +13,7 @@ import { MoveListComponent } from '../move-list/move-list.component';
   templateUrl: './main-board.component.html',
   styleUrls: ['./main-board.component.scss'],
   standalone: true,
-  imports: [NgClass, MoveListComponent]
+  imports: [NgClass, NgStyle, MoveListComponent]
 })
 export class StockfishBoardComponent extends MainBoardComponent implements OnInit, OnDestroy, OnChanges {
   private stockfishSubscriptions$ = new Subscription();
